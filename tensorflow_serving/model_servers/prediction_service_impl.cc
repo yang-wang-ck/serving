@@ -110,7 +110,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
     return end_microseconds - start_microseconds;
   }();
 
-  RecordRequestExampleCount(model_name, load_latency_microsecs);
+  RecordModelEvaluation(model_name, load_latency_microsecs);
 
   return status;
 }
