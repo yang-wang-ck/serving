@@ -91,7 +91,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
 
   const uint64 start_microseconds = Env::Default()->NowMicros();
 
-  const string model_name = &request_test.model_spec().name()
+  const string model_name = &request.model_spec().name()
   const ::grpc::Status status =
       ToGRPCStatus(TensorflowClassificationServiceImpl::Classify(
           run_options, core_, *request, response));
