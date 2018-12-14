@@ -44,8 +44,8 @@ auto* example_count_total = monitoring::Counter<1>::New(
     "/tensorflow/serving/request_example_count_total",
     "The total number of tensorflow.Examples.", "model");
 
-auto* evaluation_with_labels =
-    Sampler<1>::New({"/tensorflow/serving/evaluation_with_labels",
+auto* evaluation_with_labels = monitoring::Sampler<1>::New(
+    {"/tensorflow/serving/evaluation_with_labels",
                      "Evaluation with one label.", "model"},
                     Buckets::Explicit({1000, 5000, 10000, 20000, 30000, 50000}));
 
