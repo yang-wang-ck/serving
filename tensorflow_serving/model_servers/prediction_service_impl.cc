@@ -105,7 +105,8 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
     return end_microseconds - start_microseconds;
   }();
 
-  RecordRequestExampleCount(request.model_spec().name(), num_examples);
+  const ClassificationRequest *request_temp = &request
+  RecordRequestExampleCount(request_temp.model_spec().name(), num_examples);
 
   return status;
 }
