@@ -20,6 +20,7 @@ limitations under the License.
 #include "tensorflow_serving/servables/tensorflow/get_model_metadata_impl.h"
 #include "tensorflow_serving/servables/tensorflow/multi_inference_helper.h"
 #include "tensorflow_serving/servables/tensorflow/regression_service.h"
+#include "tensorflow_serving/servables/tensorflow/util.h"
 
 namespace tensorflow {
 namespace serving {
@@ -73,12 +74,25 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   // By default, this is infinite which is the same default as RunOptions.
   run_options.set_timeout_in_ms(
       DeadlineToTimeoutMillis(context->raw_deadline()));
+
+  const uint64 start_microseconds = Env::Default()->NowMicros();
+
   const ::grpc::Status status =
       ToGRPCStatus(TensorflowClassificationServiceImpl::Classify(
           run_options, core_, *request, response));
   if (!status.ok()) {
     VLOG(1) << "Classify request failed: " << status.error_message();
   }
+
+  const uint64 load_latency_microsecs = [&]() -> uint64 {
+    const uint64 end_microseconds = Env::Default()->NowMicros();
+    // Avoid clock skew.
+    if (end_microseconds < start_microseconds) return 0;
+    return end_microseconds - start_microseconds;
+  }();
+
+  RecordRequestExampleCount(request.model_spec().name(), num_examples);
+
   return status;
 }
 
