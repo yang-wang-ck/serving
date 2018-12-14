@@ -89,9 +89,10 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   run_options.set_timeout_in_ms(
       DeadlineToTimeoutMillis(context->raw_deadline()));
 
-  ClassificationRequest request_temp = *request
+  ClassificationRequest request_temp;
+  request_temp = *request;
 
-  const string model_name = request_temp.model_spec().name()
+  const string model_name = request_temp.model_spec().name();
 
   const uint64 start_microseconds = Env::Default()->NowMicros();
 
