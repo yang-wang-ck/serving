@@ -91,6 +91,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
 
   const uint64 start_microseconds = Env::Default()->NowMicros();
 
+  const string model_name = &request_test.model_spec().name()
   const ::grpc::Status status =
       ToGRPCStatus(TensorflowClassificationServiceImpl::Classify(
           run_options, core_, *request, response));
@@ -105,8 +106,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
     return end_microseconds - start_microseconds;
   }();
 
-  const ClassificationRequest request_test = &request
-  RecordRequestExampleCount(request_test.model_spec().name(), num_examples);
+  RecordRequestExampleCount(model_name, num_examples);
 
   return status;
 }
