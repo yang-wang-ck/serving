@@ -20,21 +20,7 @@ limitations under the License.
 #include "tensorflow_serving/servables/tensorflow/get_model_metadata_impl.h"
 #include "tensorflow_serving/servables/tensorflow/multi_inference_helper.h"
 #include "tensorflow_serving/servables/tensorflow/regression_service.h"
-#include "tensorflow_serving/servables/tensorflow/util.h"
-#include "tensorflow/cc/saved_model/signature_constants.h"
-#include "tensorflow/contrib/session_bundle/signature.h"
-#include "tensorflow/core/example/example.pb.h"
-#include "tensorflow/core/framework/tensor.h"
-#include "tensorflow/core/lib/core/errors.h"
-#include "tensorflow/core/lib/core/notification.h"
-#include "tensorflow/core/lib/core/status.h"
-#include "tensorflow/core/platform/tracing.h"
-#include "tensorflow/core/platform/types.h"
-#include "tensorflow_serving/apis/classification.pb.h"
-#include "tensorflow_serving/apis/classifier.h"
-#include "tensorflow_serving/apis/input.pb.h"
-#include "tensorflow_serving/apis/model.pb.h"
-#include "tensorflow_serving/servables/tensorflow/util.h"
+
 
 namespace tensorflow {
 namespace serving {
@@ -89,8 +75,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   run_options.set_timeout_in_ms(
       DeadlineToTimeoutMillis(context->raw_deadline()));
 
-  ClassificationRequest request_temp;
-  request_temp = *request;
+  ClassificationRequest request_temp = *request;
 
   const string model_name = request_temp.model_spec().name();
 
