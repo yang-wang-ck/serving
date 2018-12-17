@@ -2,7 +2,7 @@
 
 package(
     default_visibility = [
-        "//tensorflow_serving:internal",
+        "//tensorflow_serving:internal","//boost:internal"
     ],
     features = ["-layering_check"],
 )
@@ -223,6 +223,7 @@ cc_library(
         "//tensorflow_serving/servables/tensorflow:regression_service",
         "//tensorflow_serving/util:status_util",
         "@grpc//:grpc++",
+        "@boost//:asio"
     ],
 )
 
