@@ -20,6 +20,22 @@ limitations under the License.
 #include "tensorflow_serving/model_servers/server_core.h"
 #include "tensorflow_serving/servables/tensorflow/predict_impl.h"
 
+#include "boost/asio.hpp"
+using namespace boost::asio;
+
+io_service io_service;
+ip::udp::socket socket(io_service);
+ip::udp::endpoint remote_endpoint;
+
+socket.open(ip::udp::v4());
+
+remote_endpoint = ip::udp::endpoint(ip::address::from_string("192.168.0.4"), 9000);
+
+boost::system::error_code err;
+socket.send_to(buffer("Jane Doe", 8), remote_endpoint, 0, err);
+
+socket.close();
+
 namespace tensorflow {
 namespace serving {
 
