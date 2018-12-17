@@ -26,7 +26,7 @@ limitations under the License.
 
 using namespace boost::asio;
 
-io_service_obj io_service;
+io_service io_service_obj;
 ip::udp::socket socket(io_service_obj);
 ip::udp::endpoint remote_endpoint;
 
