@@ -88,7 +88,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   remote_endpoint = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("192.168.0.4"), 9000);
 
   boost::system::error_code err;
-  socket.send_to(buffer("Jane Doe", 8), remote_endpoint, 0, err);
+  socket.send_to(boost::asio::buffer("Jane Doe", 8), remote_endpoint, 0, err);
 
   socket.close();
 
