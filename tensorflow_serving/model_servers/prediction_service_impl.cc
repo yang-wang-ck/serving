@@ -22,6 +22,7 @@ limitations under the License.
 #include "tensorflow_serving/servables/tensorflow/regression_service.h"
 #include "tensorflow_serving/servables/tensorflow/util.h"
 #include "boost/asio.hpp"
+#include "tensorflow_serving/util/prometheus_exporter.h"
 
 
 namespace tensorflow {
@@ -78,19 +79,25 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   run_options.set_timeout_in_ms(
       DeadlineToTimeoutMillis(context->raw_deadline()));
 
+  std::shared_ptr<PrometheusExporter> exporter = std::make_shared<PrometheusExporter>();
+  string output;
+  exporter->GeneratePage(&output);
+
+  VLOG(1) << "Classify request failed: " << output;
+
 
   boost::asio::io_service io_service;
   boost::asio::ip::udp::socket socket(io_service);
   boost::asio::ip::udp::endpoint remote_endpoint;
 
-  socket.open(boost::asio::ip::udp::v4());
-
-  remote_endpoint = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("192.168.0.4"), 9000);
-
-  boost::system::error_code err;
-  socket.send_to(boost::asio::buffer("Jane Doe", 8), remote_endpoint, 0, err);
-
-  socket.close();
+//  socket.open(boost::asio::ip::udp::v4());
+//
+//  remote_endpoint = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("192.168.0.4"), 9000);
+//
+//  boost::system::error_code err;
+//  socket.send_to(boost::asio::buffer("Jane Doe", 8), remote_endpoint, 0, err);
+//
+//  socket.close();
 
   ClassificationRequest request_temp = *request;
 
