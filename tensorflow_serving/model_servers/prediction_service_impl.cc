@@ -24,21 +24,6 @@ limitations under the License.
 #include "boost/asio.hpp"
 
 
-using namespace boost::asio;
-
-io_service io_service_obj;
-ip::udp::socket socket(io_service_obj);
-ip::udp::endpoint remote_endpoint;
-
-socket.open(ip::udp::v4());
-
-remote_endpoint = ip::udp::endpoint(ip::address::from_string("192.168.0.4"), 9000);
-
-boost::system::error_code err;
-socket.send_to(buffer("Jane Doe", 8), remote_endpoint, 0, err);
-
-socket.close();
-
 namespace tensorflow {
 namespace serving {
 
@@ -92,6 +77,20 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   // By default, this is infinite which is the same default as RunOptions.
   run_options.set_timeout_in_ms(
       DeadlineToTimeoutMillis(context->raw_deadline()));
+
+
+  boost::asio::io_service io_service;
+  boost::asio::ip::udp::socket socket(io_service);
+  boost::asio::ip::udp::endpoint remote_endpoint;
+
+  socket.open(boost::asio::ip::udp::v4());
+
+  remote_endpoint = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("192.168.0.4"), 9000);
+
+  boost::system::error_code err;
+  socket.send_to(buffer("Jane Doe", 8), remote_endpoint, 0, err);
+
+  socket.close();
 
   ClassificationRequest request_temp = *request;
 
