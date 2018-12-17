@@ -200,6 +200,7 @@ cc_library(
         "//tensorflow_serving/apis:model_management_proto",
         "//tensorflow_serving/apis:model_service_proto",
         "//tensorflow_serving/util:status_util",
+
         "@grpc//:grpc++",
     ],
 )

@@ -14,6 +14,7 @@ package_group(
     name = "internal",
     packages = [
         "//tensorflow_serving/...",
+        "//boost/..."
     ],
 )
 
