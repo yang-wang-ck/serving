@@ -215,6 +215,7 @@ cc_library(
     deps = [
         ":grpc_status_util",
         ":server_core",
+        "//tensorflow_serving/config:logging_config_proto",
         "//tensorflow_serving/util:prometheus_exporter",
         "//tensorflow_serving/apis:prediction_service_proto",
         "//tensorflow_serving/servables/tensorflow:classification_service",

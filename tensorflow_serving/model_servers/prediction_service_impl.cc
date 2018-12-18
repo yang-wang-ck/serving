@@ -23,6 +23,7 @@ limitations under the License.
 #include "tensorflow_serving/servables/tensorflow/util.h"
 #include "boost/asio.hpp"
 #include "tensorflow_serving/util/prometheus_exporter.h"
+#include "tensorflow/core/platform/logging.h"
 
 
 namespace tensorflow {
@@ -83,7 +84,7 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   string output;
   exporter->GeneratePage(&output);
 
-  VLOG(1) << "Classify request failed: " << output;
+  LOG(INFO) << output;
 
 
   boost::asio::io_service io_service;
