@@ -63,7 +63,6 @@ class TensorFlowClassifier : public ClassifierInterface {
     if (num_examples == 0) {
       return errors::InvalidArgument("ClassificationRequest::input is empty.");
     }
-    RecordRequestExampleCount(request.model_spec().name(), num_examples);
 
     TRACELITERAL("RunClassification");
     // Support serving models that return classes, scores or both.
@@ -177,8 +176,6 @@ class SavedModelTensorFlowClassifier : public ClassifierInterface {
     TF_RETURN_IF_ERROR(PerformOneShotTensorComputation(
         run_options_, request.input(), input_tensor_name, output_tensor_names,
         session_, &outputs, &num_examples));
-
-    RecordRequestExampleCount(request.model_spec().name(), num_examples);
 
     TRACELITERAL("ConvertToClassificationResult");
     return PostProcessClassificationResult(

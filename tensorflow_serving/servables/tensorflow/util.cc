@@ -47,7 +47,7 @@ auto* example_count_total = monitoring::Counter<1>::New(
 auto* evaluation_with_labels = monitoring::Sampler<1>::New(
     {"/tensorflow/serving/evaluation_with_labels",
                      "Evaluation with one label.", "model"},
-                    monitoring::Buckets::Explicit({1000, 5000, 10000, 20000, 30000, 50000}));
+                    monitoring::Buckets::Explicit({1000, 5000, 10000, 20000, 30000, 50000, 100000, 200000}));
 
 // Returns the number of examples in the Input.
 int NumInputExamples(const internal::SerializedInput& input) {
