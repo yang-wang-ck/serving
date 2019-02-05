@@ -51,7 +51,7 @@ auto* evaluation_with_labels = monitoring::Sampler<1>::New(
 
 
 auto* failed_evaluation_with_labels = monitoring::Sampler<1>::New(
-    {"/tensorflow/serving/evaluation_with_labels",
+    {"/tensorflow/serving/failed_evaluation_with_labels",
                      "Evaluation with one label.", "model"},
                     monitoring::Buckets::Explicit({1000, 5000, 10000, 20000, 30000, 50000, 100000, 200000, 400000, 800000}));
 
