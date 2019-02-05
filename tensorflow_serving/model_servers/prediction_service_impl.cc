@@ -85,18 +85,22 @@ int DeadlineToTimeoutMillis(const gpr_timespec deadline) {
   const ::grpc::Status status =
       ToGRPCStatus(TensorflowClassificationServiceImpl::Classify(
           run_options, core_, *request, response));
+
+
+    const uint64 load_latency_microsecs = [&]() -> uint64 {
+      const uint64 end_microseconds = Env::Default()->NowMicros();
+      // Avoid clock skew.
+      if (end_microseconds < start_microseconds) return 0;
+      return end_microseconds - start_microseconds;
+    }();
+
   if (!status.ok()) {
     VLOG(1) << "Classify request failed: " << status.error_message();
+    RecordFailedModelEvaluation(model_name, load_latency_microsecs);
   }
-
-  const uint64 load_latency_microsecs = [&]() -> uint64 {
-    const uint64 end_microseconds = Env::Default()->NowMicros();
-    // Avoid clock skew.
-    if (end_microseconds < start_microseconds) return 0;
-    return end_microseconds - start_microseconds;
-  }();
-
-  RecordModelEvaluation(model_name, load_latency_microsecs);
+  else {
+    RecordModelEvaluation(model_name, load_latency_microsecs);
+  }
 
   return status;
 }

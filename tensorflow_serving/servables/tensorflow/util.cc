@@ -49,6 +49,12 @@ auto* evaluation_with_labels = monitoring::Sampler<1>::New(
                      "Evaluation with one label.", "model"},
                     monitoring::Buckets::Explicit({1000, 5000, 10000, 20000, 30000, 50000, 100000, 200000, 400000, 800000}));
 
+
+auto* failed_evaluation_with_labels = monitoring::Sampler<1>::New(
+    {"/tensorflow/serving/evaluation_with_labels",
+                     "Evaluation with one label.", "model"},
+                    monitoring::Buckets::Explicit({1000, 5000, 10000, 20000, 30000, 50000, 100000, 200000, 400000, 800000}));
+
 // Returns the number of examples in the Input.
 int NumInputExamples(const internal::SerializedInput& input) {
   switch (input.kind_case()) {
@@ -76,6 +82,10 @@ monitoring::Counter<1>* GetExampleCountTotal() { return example_count_total; }
 
 void RecordModelEvaluation(const string& model_name, uint64 micros) {
   evaluation_with_labels->GetCell(model_name)->Add(micros);
+}
+
+void RecordFailedModelEvaluation(const string& model_name, uint64 micros) {
+  failed_evaluation_with_labels->GetCell(model_name)->Add(micros);
 }
 
 void RecordRequestExampleCount(const string& model_name, size_t count) {

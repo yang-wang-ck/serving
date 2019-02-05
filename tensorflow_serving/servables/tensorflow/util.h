@@ -40,6 +40,9 @@ monitoring::Counter<1>* GetExampleCountTotal();
 
 void RecordModelEvaluation(const string& model_name, uint64 micros);
 
+void RecordFailedModelEvaluation(const string& model_name, uint64 micros);
+
+
 // Records the example count of this request with the metric tracking the
 // histogram of number of examples per request.
 void RecordRequestExampleCount(const string& model_name, size_t count);
